@@ -674,6 +674,7 @@
       letter-spacing: 1px;
       pointer-events: none;
     }
+    #videoModal.show { display:flex !important; }
 
     /* ─── English mode overrides ───────────────────────────── */
     body.en {
@@ -835,6 +836,62 @@
 
   <div class="footer-note">© Bookpeak – اكتشف عالم الكتب</div>
 
+  <!-- VIDEO MODAL -->
+  <div id="videoModal" style="
+    display:none; position:fixed; inset:0; z-index:999;
+    background:rgba(0,0,0,0.75); backdrop-filter:blur(8px);
+    align-items:center; justify-content:center;
+    padding:20px;
+  ">
+    <div style="
+      background:#1C1A17;
+      border-radius:20px;
+      padding:32px 28px;
+      max-width:420px; width:100%;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      border:1px solid rgba(184,146,74,.25);
+      text-align:center;
+      position:relative;
+    ">
+      <!-- Close -->
+      <button onclick="closeVideo()" style="
+        position:absolute; top:14px; left:14px;
+        background:rgba(255,255,255,.08); border:none; color:#aaa;
+        width:30px; height:30px; border-radius:50%;
+        cursor:pointer; font-size:.9rem;
+      ">✕</button>
+
+      <!-- Book icon -->
+      <div style="font-size:2.8rem; margin-bottom:12px;">📖</div>
+
+      <!-- Title -->
+      <div id="modalTitle" style="
+        color:#D4A96A; font-family:'Tajawal',sans-serif;
+        font-size:1.15rem; font-weight:700;
+        margin-bottom:8px; line-height:1.4;
+      "></div>
+
+      <!-- Subtitle -->
+      <div style="color:#888; font-family:'Tajawal',sans-serif; font-size:.85rem; margin-bottom:24px;">
+        اضغط لمشاهدة الفيديو على يوتيوب
+      </div>
+
+      <!-- YouTube Button -->
+      <a id="modalLink" href="#" target="_blank" onclick="closeVideo()" style="
+        display:inline-flex; align-items:center; gap:10px;
+        background:#FF0000; color:#fff;
+        padding:13px 28px; border-radius:50px;
+        text-decoration:none; font-family:'Tajawal',sans-serif;
+        font-size:1rem; font-weight:700;
+        box-shadow:0 4px 20px rgba(255,0,0,.35);
+        transition:all .2s;
+      " onmouseover="this.style.background='#cc0000'" onmouseout="this.style.background='#FF0000'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.1c-.6.1-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7 21.7 12 21.8 12 21.8s4.8 0 7.3-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1C23.8 8.5 23.5 6.2 23.5 6.2zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+        شاهد على يوتيوب
+      </a>
+    </div>
+  </div>
+
   <!-- ═══ JAVASCRIPT ═══════════════════════════════════════════ -->
   <script>
   // ─── DATA ────────────────────────────────────────────────────
@@ -858,7 +915,7 @@
       books: {
         'شعر': [],
         'أدب': [
-          { title:'في الشعر الجاهلي', author:'طه حسين', cover:'shaer', badge:'أدب', video:'' }
+          { title:'في الشعر الجاهلي', author:'طه حسين', cover:'shaer', badge:'أدب', video:'https://youtu.be/jW9q2eQaFDA?si=78Fguu_RebRKzDLy' }
         ],
         'مجموعات قصصية': []
       }
@@ -867,11 +924,11 @@
       subs: ['تاريخ','جغرافيا','فلسفة وعلم نفس','فنون','دين'],
       books: {
         'تاريخ': [
-          { title:'ماذا قدم المسلمون للعالم', author:'راغب السرجاني', cover:'muslimoon', badge:'تاريخ', video:'' },
-          { title:'مقدمة ابن خلدون', author:'ابن خلدون', cover:'ibn', badge:'تاريخ', video:'' }
+          { title:'ماذا قدم المسلمون للعالم', author:'راغب السرجاني', cover:'muslimoon', badge:'تاريخ', video:'https://youtube.com/shorts/_z98OubnwQ8?si=T0JKX_ogL7qNMCzV' },
+          { title:'مقدمة ابن خلدون', author:'ابن خلدون', cover:'ibn', badge:'تاريخ', video:'https://youtu.be/Z5mwu01qSks?si=osTcv8M8HxnR143y' }
         ],
         'جغرافيا': [
-          { title:'أطلانتس ونصوص الحضارة الفرعونية', author:'إسلام غائب أنور', cover:'atlantis', badge:'جغرافيا', video:'' }
+          { title:'أطلانتس ونصوص الحضارة الفرعونية', author:'إسلام غائب أنور', cover:'atlantis', badge:'جغرافيا', video:'https://youtu.be/ylvScQhXslQ?si=BD2bz-hS0WxdrUzL' }
         ],
         'فلسفة وعلم نفس': [
           { title:'جلسات نفسية', author:'د. محمد إبراهيم', cover:'jalsat', badge:'علم نفس', video:'' },
@@ -879,7 +936,7 @@
         ],
         'فنون': [],
         'دين': [
-          { title:'فلسطين "واجبات الأمة"', author:'راغب السرجاني', cover:'falastin', badge:'دين', video:'' }
+          { title:'فلسطين "واجبات الأمة"', author:'راغب السرجاني', cover:'falastin', badge:'دين', video:'https://youtube.com/shorts/K0mqSvW1NsY?si=DoZaF3CuhgtFvYLS' }
         ]
       }
     },
@@ -887,10 +944,10 @@
       subs: ['رعب','إثارة وتشويق','كوميدي'],
       books: {
         'رعب': [
-          { title:'حظك اليوم', author:'أحمد خالد توفيق', cover:'haz', badge:'رعب', video:'' }
+          { title:'حظك اليوم', author:'أحمد خالد توفيق', cover:'haz', badge:'رعب', video:'https://youtu.be/26sYSQmQKP8?si=7DASd_DhwsyW7Cqi' }
         ],
         'إثارة وتشويق': [
-          { title:'تراب الماس', author:'أحمد مراد', cover:'turab', badge:'إثارة', video:'' }
+          { title:'تراب الماس', author:'أحمد مراد', cover:'turab', badge:'إثارة', video:'https://youtu.be/31p_wvmbf98?si=QDN_Gzw2s7MDEMF6' }
         ],
         'كوميدي': []
       }
@@ -899,7 +956,7 @@
 
   const EN_BOOKS = [
     { title:'The 7 Habits of Highly Effective People', author:'Stephen R. Covey', cover:'habits', video:'' },
-    { title:'Mindset: The New Psychology of Success', author:'Carol S. Dweck', cover:'mindset', video:'' }
+    { title:'Mindset: The New Psychology of Success', author:'Carol S. Dweck', cover:'mindset', video:'https://youtu.be/6Jb-5ajnfYo?si=tI_gAkmPVRkBY6oH' }
   ];
 
   // ─── STATE ───────────────────────────────────────────────────
@@ -1101,14 +1158,32 @@
   // ─── BOOK OPEN ───────────────────────────────────────────────
   function openBook(title, videoUrl) {
     if (videoUrl && videoUrl.trim()) {
-      window.open(videoUrl, '_blank');
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalLink').href = videoUrl.trim();
+      document.getElementById('videoModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
     } else {
       const msg = currentLang === 'en'
-        ? `📖 "${title}" — Video link coming soon!`
-        : `📖 "${title}" — رابط الفيديو سيُضاف قريباً!`;
+        ? '📖 "' + title + '" — Video coming soon!'
+        : '📖 "' + title + '" — الفيديو سيُضاف قريباً!';
       alert(msg);
     }
   }
+
+  function closeVideo() {
+    document.getElementById('videoModal').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  window.addEventListener('load', function() {
+    document.getElementById('videoModal').addEventListener('click', function(e) {
+      if (e.target === this) closeVideo();
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeVideo();
+  });
 
   // ─── SEARCH ──────────────────────────────────────────────────
   function handleSearch(val) {
